@@ -106,7 +106,7 @@ packages:
       name: google_api_headers
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "0.1.1+2"
   google_maps_flutter:
     dependency: transitive
     description:
@@ -183,7 +183,7 @@ packages:
       name: package_info
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "0.4.3+4"
   path:
     dependency: transitive
     description:
@@ -232,7 +232,7 @@ packages:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.0.0"
+    version: "2.1.5"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -293,7 +293,7 @@ packages:
       name: tuple
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0-nullsafety.0"
+    version: "1.0.3"
   typed_data:
     dependency: transitive
     description:
