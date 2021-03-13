@@ -217,7 +217,6 @@ class AutoCompleteSearchState extends State<AutoCompleteSearch> {
     }
   }
 
-  //TODO
   Future<void> _buildPredictionOverlay(List<Prediction> predictions) {
     return showModalBottomSheet(
         context: context,
@@ -227,19 +226,34 @@ class AutoCompleteSearchState extends State<AutoCompleteSearch> {
         backgroundColor: Colors.white,
         builder: (context) {
           return Container(
-              padding: EdgeInsets.only(top: 5, bottom: 5),
-              child: ListView(
-                  shrinkWrap: true,
-                  children: ListTile.divideTiles(
-                    context: context,
-                    tiles: predictions.map((p) => PredictionTile(
-                          prediction: p,
-                          onTap: (selectedPrediction) {
-                            resetSearchBar();
-                            widget.onPicked(selectedPrediction);
-                          },
-                        )),
-                  ).toList()));
+              constraints: BoxConstraints(
+                maxHeight: MediaQuery.of(context).size.height * 0.6,
+              ),
+              child: Column(children: <Widget>[
+                Padding(
+                    padding: EdgeInsets.only(top: 10, bottom: 10),
+                    child: Container(
+                        height: 5,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            color: Color.fromRGBO(237, 236, 236, 1.0),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8))))),
+                Container(
+                    padding: EdgeInsets.only(top: 5, bottom: 5),
+                    child: ListView(
+                        shrinkWrap: true,
+                        children: ListTile.divideTiles(
+                          context: context,
+                          tiles: predictions.map((p) => PredictionTile(
+                                prediction: p,
+                                onTap: (selectedPrediction) {
+                                  resetSearchBar();
+                                  widget.onPicked(selectedPrediction);
+                                },
+                              )),
+                        ).toList())),
+              ]));
         });
   }
 
