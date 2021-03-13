@@ -217,44 +217,74 @@ class AutoCompleteSearchState extends State<AutoCompleteSearch> {
     }
   }
 
-  Future<void> _buildPredictionOverlay(List<Prediction> predictions) {
-    return showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(10))),
-        backgroundColor: Colors.white,
-        builder: (context) {
-          return Container(
-              constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.6,
-              ),
-              child: Column(children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 10),
-                    child: Container(
-                        height: 5,
-                        width: 40,
-                        decoration: BoxDecoration(
-                            color: Color.fromRGBO(237, 236, 236, 1.0),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(8))))),
-                Container(
-                    padding: EdgeInsets.only(top: 5, bottom: 5),
-                    child: ListView(
-                        shrinkWrap: true,
-                        children: ListTile.divideTiles(
-                          context: context,
-                          tiles: predictions.map((p) => PredictionTile(
-                                prediction: p,
-                                onTap: (selectedPrediction) {
-                                  resetSearchBar();
-                                  widget.onPicked(selectedPrediction);
-                                },
-                              )),
-                        ).toList())),
-              ]));
-        });
+  _displayOverlay(Widget overlayChild) {
+    _clearOverlay();
+
+    final RenderBox? appBarRenderBox =
+        widget.appBarKey.currentContext!.findRenderObject() as RenderBox?;
+
+    overlayEntry = OverlayEntry(
+      builder: (context) => Positioned(
+        bottom: 0,
+        left: 0,
+        right: 0,
+        child: Material(
+          color: Colors.transparent,
+          child: overlayChild,
+        ),
+      ),
+    );
+
+    Overlay.of(context)!.insert(overlayEntry!);
+  }
+
+  Widget _buildPredictionOverlay(List<Prediction> predictions) {
+    return Container(
+        constraints: BoxConstraints(
+          maxHeight: MediaQuery.of(context).size.height * 0.5,
+        ),
+        child: DraggableScrollableSheet(
+            minChildSize: 1.0,
+            initialChildSize: 1.0,
+            builder: (BuildContext context, ScrollController scrollController) {
+              return SingleChildScrollView(
+                  controller: scrollController,
+                  child: Card(
+                      elevation: 6.0,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                        topRight: Radius.circular(10),
+                        topLeft: Radius.circular(10),
+                      )),
+                      color: Colors.white,
+                      margin: const EdgeInsets.all(0),
+                      child: Container(
+                          child: Column(children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Container(
+                                height: 5,
+                                width: 40,
+                                decoration: BoxDecoration(
+                                    color: Color.fromRGBO(237, 236, 236, 1.0),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8))))),
+                        Container(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: ListView(
+                                shrinkWrap: true,
+                                children: ListTile.divideTiles(
+                                  context: context,
+                                  tiles: predictions.map((p) => PredictionTile(
+                                        prediction: p,
+                                        onTap: (selectedPrediction) {
+                                          resetSearchBar();
+                                          widget.onPicked(selectedPrediction);
+                                        },
+                                      )),
+                                ).toList())),
+                      ]))));
+            }));
   }
 
   _performAutoCompleteSearch(String searchTerm) async {
@@ -287,7 +317,7 @@ class AutoCompleteSearchState extends State<AutoCompleteSearch> {
         return;
       }
 
-      await _buildPredictionOverlay(response.predictions);
+      _displayOverlay(_buildPredictionOverlay(response.predictions));
     }
   }
 
