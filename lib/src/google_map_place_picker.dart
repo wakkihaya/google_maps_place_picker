@@ -91,7 +91,7 @@ class GoogleMapPlacePicker extends StatelessWidget {
     provider.placeSearchingState = SearchingState.Searching;
 
     final GeocodingResponse response = await provider.geocoding.searchByLocation(
-      Location(lat: provider.cameraPosition!.target.latitude, lng: provider.cameraPosition!.target.longitude),
+      Location( provider.cameraPosition!.target.latitude,  provider.cameraPosition!.target.longitude),
       language: language,
     );
 

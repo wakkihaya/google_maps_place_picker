@@ -74,7 +74,7 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(
                       builder: (context) {
                         return PlacePicker(
-                          apiKey: '' //TODO,
+                          apiKey: '' ,//TODO,
                           initialPosition: HomePage.kInitialPosition,
                           useCurrentLocation: true,
                           selectInitialPosition: true,

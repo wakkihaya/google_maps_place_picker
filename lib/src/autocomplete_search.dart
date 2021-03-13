@@ -298,8 +298,8 @@ class AutoCompleteSearchState extends State<AutoCompleteSearch> {
         location: provider.currentPosition == null
             ? null
             : Location(
-                lat: provider.currentPosition!.latitude,
-                lng: provider.currentPosition!.longitude),
+                provider.currentPosition!.latitude,
+                provider.currentPosition!.longitude),
         offset: widget.autocompleteOffset,
         radius: widget.autocompleteRadius,
         language: widget.autocompleteLanguage,
