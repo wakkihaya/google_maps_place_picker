@@ -208,9 +208,9 @@ class AutoCompleteSearchState extends State<AutoCompleteSearch> {
 
     if (searchTerm.length < 1) return;
 
-    _displayOverlay(_buildSearchingOverlay());
+    // _displayOverlay(_buildSearchingOverlay());
 
-    _performAutoCompleteSearch(searchTerm);
+    _performAutoCompleteSearch(searchTerm); //TODO: change/
   }
 
   _clearOverlay() {
@@ -229,10 +229,13 @@ class AutoCompleteSearchState extends State<AutoCompleteSearch> {
 
     overlayEntry = OverlayEntry(
       builder: (context) => Positioned(
-        top: appBarRenderBox.size.height + 90,
-        left: screenWidth * 0.025,
-        right: screenWidth * 0.025,
+        bottom: 0,
+        left: 0,
+        right: 0,
         child: Material(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10), topRight: Radius.circular(10))),
           elevation: 4.0,
           child: overlayChild,
         ),
@@ -265,19 +268,23 @@ class AutoCompleteSearchState extends State<AutoCompleteSearch> {
   }
 
   Widget _buildPredictionOverlay(List<Prediction> predictions) {
-    return ListBody(
-      children: predictions
-          .map(
-            (p) => PredictionTile(
-              prediction: p,
-              onTap: (selectedPrediction) {
-                resetSearchBar();
-                widget.onPicked(selectedPrediction);
-              },
-            ),
-          )
-          .toList(),
-    );
+    return Container(
+        padding: EdgeInsets.only(bottom: 20, top: 10),
+        child: ListBody(
+            children: ListTile.divideTiles(
+          context: context,
+          tiles: predictions
+              .map(
+                (p) => PredictionTile(
+                  prediction: p,
+                  onTap: (selectedPrediction) {
+                    resetSearchBar();
+                    widget.onPicked(selectedPrediction);
+                  },
+                ),
+              )
+              .toList(),
+        ).toList()));
   }
 
   _performAutoCompleteSearch(String searchTerm) async {
