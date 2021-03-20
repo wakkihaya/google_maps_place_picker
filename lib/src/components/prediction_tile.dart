@@ -11,9 +11,12 @@ class PredictionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(Icons.location_on),
-      title: RichText(
-        text: TextSpan(
-          children: _buildPredictionText(context),
+      title: Padding(
+        padding: EdgeInsets.only(top: 5, bottom: 5),
+        child: RichText(
+          text: TextSpan(
+            children: _buildPredictionText(context),
+          ),
         ),
       ),
       onTap: () {
